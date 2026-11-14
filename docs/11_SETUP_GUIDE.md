@@ -1,7 +1,7 @@
 # Setup and Installation Guide
 
 > **Maintainer:** Saumya Mishra (MID-07). **Goal:** a new teammate can get from zero to "tests pass and data checked" without asking anyone.
-> **Verification status:** the repository records 143 passing tests on 2026-11-13 using Python 3.13. Editable installation was verified with existing system packages; a fresh network installation, Docker build, hosted CI run and clean-clone reproduction have not yet been verified. See `docs/12_QA_TEST_PLAN.md`.
+ > **Verification status:** a fresh macOS Apple Silicon clone with Python 3.15 completed `python -m pip install -e ".[dev]"` and `MPLBACKEND=Agg python -m pytest -q` with **143 passed** on 2026-11-14. GitHub Actions also passed the same editable install and full test command on Python 3.11 (run #26). Docker build and independent model retraining remain unverified. See `docs/12_QA_TEST_PLAN.md`.
 
 ---
 
@@ -54,17 +54,17 @@ If PowerShell blocks activation, run `Set-ExecutionPolicy -Scope CurrentUser Rem
 
 ---
 
-## 4. Install dependencies **[works now, with a caveat]**
+## 4. Install dependencies **[verified on a clean clone]**
+
+Use the project metadata as the canonical install path. It installs the runtime, dashboard, training and development/test dependencies declared by `pyproject.toml`:
 
 ```bash
-pip install -r requirements.txt
+python -m pip install -e ".[dev]"
 ```
 
-Caveats (see BUG-005):
+The clean-clone check on macOS Apple Silicon with Python 3.15 completed this command successfully. GitHub Actions also completed it on Python 3.11. Package downloads experienced transient network timeouts but resumed successfully.
 
-- `requirements.txt` is a **proposed** list with lower bounds only. It has not yet been installed as a whole on a clean machine. The first person to do so should record the working versions in the PR.
-- `torch` is large (hundreds of MB to a few GB, depending on platform). If you only need the docs and tests, install the light subset instead: `pip install pytest nbformat`.
-- If `pip` picks a CUDA build you do not need, follow the selector on pytorch.org for a CPU-only wheel.
+`requirements.txt` remains a proposed lower-bound list and is not the canonical tested install path. PyTorch is a large dependency; dashboard-only use can install `.[dashboard]`, while the full test suite should use `.[dev]`.
 
 Verify the environment:
 
@@ -178,7 +178,7 @@ Follow the notebook policy in `notebooks/README.md`: explanations go in Markdown
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| `ModuleNotFoundError: pytest` | Environment not activated or deps not installed | Activate `.venv`, run `pip install -r requirements.txt` |
+| `ModuleNotFoundError: pytest` | Environment not activated or development dependencies not installed | Activate `.venv`, run `python -m pip install -e ".[dev]"` |
 | `test_no_data_model_or_system_junk_files_are_present` fails | A `.DS_Store`, `.gz`, `.pt` or similar file sits inside the repository folder | Delete it or move it under an ignored path; confirm `.gitignore` is present |
 | Smoke test: `File not found` | Wrong path or file name | Check `ls data/raw/` |
 | Smoke test: `rows do not have 29 columns` | Truncated download or wrong file | Re-download; compare the checksum |
