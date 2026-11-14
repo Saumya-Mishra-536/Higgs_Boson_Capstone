@@ -38,14 +38,14 @@ Real particle detectors record electronic signals (tracker hits, calorimeter ene
 
 ### Q6: What did your benchmarks reveal about the value of the 7 high-level features?
 **Authoritative Answer:**
-The high-level features exhibit extraordinary discriminatory efficiency. Despite comprising only 7 numbers compared to 21 low-level measurements:
+The reconciled 250k classical benchmark shows higher test ROC-AUC for the high-level feature group than for the low-level group. This is an observation on the recorded sample, not a universal property:
 - The reconciled 250k Logistic Regression results are 0.5960 for low-level and 0.6518 for high-level features. <!-- allow-metric -->
 - The earlier MLP comparisons in this guide are provisional and remain under the neural release gate. Do not use them to make a final cross-family claim.
 - The benchmark results can motivate further study of invariant-mass features, but they do not prove a general physical explanation or a universal convergence advantage.
 
-### Q7: Why does combining all 28 features yield the best performance?
+### Q7: What does the current evidence say about combining all 28 features?
 **Authoritative Answer:**
-The reconciled 250k classical results show the all-feature Logistic Regression run above the low-level and high-level variants. The earlier all-feature MLP metrics are provisional under BUG-015 and BUG-017. Combining feature groups is a reasonable benchmark configuration to evaluate, but do not claim a final neural best-model result until the release decision is recorded.
+The current saved 250k registry reports its strongest all-feature run for XGBoost and a closely performing all-feature compact MLP. These values are scoped to that registry and sample. The separate earlier MLP results remain provisional under BUG-015 and BUG-017; do not use them to claim a final neural best-model result until the release decision is recorded.
 
 ### Q8: What preprocessing is applied to b-tag variables and angles?
 **Authoritative Answer:**
