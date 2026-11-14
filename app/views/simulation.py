@@ -146,7 +146,10 @@ def predict_scores(models: dict[str, Any], scaler: Any, X: pd.DataFrame) -> dict
         elif hasattr(model, "predict_proba"):
             scores[name] = model.predict_proba(Xf.values)[:, 1]
         else:
-            scores[name] = model.predict(Xf.values).astype(np.float64)
+            raise TypeError(
+                f"Model '{name}' does not expose positive-class scores via predict_proba; "
+                "hard class predictions are not valid classifier scores."
+            )
     return scores
 
 
