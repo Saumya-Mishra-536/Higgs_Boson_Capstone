@@ -2,7 +2,7 @@
 
 > **Owner:** Saumya Mishra (END-04, MID-07). **Companion files:** `team/BUG_TRACKER.md`, `team/CHANGELOG.md`, `tests/`.
 > **Principle:** Saumya coordinates and verifies; module owners write and fix the tests and code for their own modules (`team/TEAM_CHARTER.md`).
- > **Verification status:** fresh macOS Apple Silicon clone and editable `.[dev]` install passed on 2026-11-14 with 143 tests passing; GitHub Actions run #26 also passed on Python 3.11. Docker build, independent model retraining and module-owner integration review remain unverified.
+> **Verification status:** fresh macOS Apple Silicon clone and editable `.[dev]` install passed on 2026-11-14 with 143 tests passing; GitHub Actions run #26 also passed on Python 3.11. Docker build, independent model retraining and module-owner integration review remain unverified.
 
 ---
 
