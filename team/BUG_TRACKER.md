@@ -57,23 +57,23 @@ Sweep scope: every file in the uploaded scaffold (60 entries), read in full and 
 | BUG-019 | P3 | Artifacts | The 250k `metrics.json` files list feature names as `feat_0` to `feat_27` rather than the real column names. Dashboard feature tables will show generic names. | `outputs/*/metrics.json` (`features.names`) | Rachit, Aditya | **Fixed** 2026-10-27 (commit 57cb133): all 250k metrics.json files now use real HIGGS column names (lepton_pt … m_wwbb). Verified 2026-11-13: all 9 artifact files show `has_generic: False`. |
 | BUG-020 | P1 | Reproducibility | The processed samples (`data/processed/higgs_sample_250k.csv.gz`, `higgs_sample_1m.csv.gz`) and `outputs/model_weights/` are git-ignored and absent from the repository. No one can regenerate the results from the repo alone. | `.gitignore`; `outputs/README.md` | Krishna / Aditya | **Fixed** 2026-11-13: Manifests committed (`data/processed/*.manifest.json` now unignored). 250k manifest at `data/processed/higgs_sample_250k.csv.gz.manifest.json`, 1M manifest at `data/processed/higgs_sample_1m.csv.gz.manifest.json`. Regeneration commands in `data/processed/README.md`. SHA-256 prefix recorded. |
 | BUG-021 | P2 | Dashboard / entry points | `app/main.py` and `streamlit_app.py` both exist, and `app/loader.py` and `app/utils/loader.py` overlap. | `app/` | Ronit | **Open; module-owner review required.** Dashboard artifact fixes merged in PR #26; verify whether entry-point and loader consolidation remains necessary before closure. |
-| BUG-022 | P2 | Tests / environment | `tests/unit/test_app_views.py` requires Streamlit. It fails in an environment where only the core test tools are installed. | `tests/unit/test_app_views.py`; `docs/11` section 8 | Ronit, Saumya | **Partly addressed:** setup guide documents dashboard installation and QA limitations. CI dependency coverage remains to be verified. |
+| BUG-022 | P2 | Tests / environment | `tests/unit/test_app_views.py` requires Streamlit. It fails in an environment where only the core test tools are installed. | `tests/unit/test_app_views.py`; `docs/11` section 8 | Ronit, Saumya | **Fixed / verified 2026-11-14:** canonical `.[dev]` install succeeded from a fresh macOS clone and in GitHub Actions; full suite passed locally (143 tests). The documented test install now includes dashboard dependencies. |
 | BUG-023 | P2 | Documentation / reports | The Saumya report draft (`HiggsLens_Project_Report`) states that XGBoost is not implemented and omits the 1M benchmark. Both are now in the repo. | `docs/` and report draft | Saumya | **In progress.** Saumya's report draft and classical report have been corrected against the reconciliation record. Final acceptance still depends on the neural release decision and module-owner review. |
 | BUG-024 | P2 | Governance | Legacy flat artifact schema conflicts with the implemented nested `higgs-experiment-v1` contract. | `docs/decisions/DRAFT-ADR-0002-experiment-artifact-schema.md`; `app/loader.py`; `app/utils/schema.py` | Krishna / Ronit | **Decision accepted 2026-11-12:** `higgs-experiment-v1` is canonical. Legacy loader consolidation and regression tests remain open under issue #21. |
 | BUG-025 | P2 | Deployment | The setup guide had a generic `<OWNER>` clone placeholder and did not identify the canonical Streamlit Cloud repository. | `docs/11_SETUP_GUIDE.md` | Krishna | **Fixed 2026-11-12 in merged PR #23.** Canonical repository is `CosmicMagnetar/higgs-event-lab`; clone URL and Streamlit Cloud repository are explicit. |
 | BUG-026 | P2 | Data privacy | `data/processed/higgs_sample_250k.csv.gz.manifest.json` records the local machine path (a personal user folder). The path is not needed for reproduction. | manifest file | Krishna / Aditya | **Fixed** 2026-11-12 (PR #24) & 2026-11-13 (Issue #18): Stripped local user paths (`/Users/...`, `/content/...`) from `data/processed/higgs_sample_250k.csv.gz.manifest.json`, `data/interim/cleaning_manifest.json`, and all `outputs/*/metrics.json` artifacts. Added `to_relative_manifest_path()` in `src/higgs_event_lab/data.py` to ensure all future manifests use repository-relative paths. |
 
-### Summary counts (2026-11-13, after data & classical reconciliation)
+### Summary counts (2026-11-14, after clean-clone QA)
 
 | Severity | Total | Fixed | Open |
 |---|---|---|---|
 | P0 | 2 | 1 | 1 (BUG-015) |
 | P1 | 8 | 7 | 1 (BUG-017) |
-| P2 | 10 | 7 | 3 (BUG-021, 022, 023) |
+| P2 | 10 | 8 | 2 (BUG-021, 023) |
 | P3 | 6 | 6 | 0 |
-| **All** | **26** | **21** | **5** |
+| **All** | **26** | **22** | **4** |
 
-BUG-022 is partly addressed (the setup guide now warns about Streamlit) and is counted as open until the test prerequisites are fixed.
+BUG-022 is verified fixed: the canonical development install includes Streamlit and the complete test suite passes on a fresh clone and in hosted CI.
 
 ## 5. Watch list: risks to test as soon as code exists
 
@@ -91,8 +91,8 @@ These are not bugs yet. Each becomes a bug the moment the code fails the check. 
 | W-08 | Metric edge cases (one class only, ties) | Unit tests with tiny arrays | Krishna | Open |
 | W-09 | Dashboard shows numbers without artifacts | Start the app with an empty `outputs/` and assert an empty-state message | Ronit | Open |
 | W-10 | Dashboard accepts malformed or incompatible artifacts | Feed a bad schema and assert a clear error | Ronit | Open |
-| W-11 | Accuracy reported alone, or mock data shown unlabelled | Review of the report and dashboard | Saumya | In progress; report reviewed, dashboard review pending |
-| W-12 | Text claims discovery or real-world probability | Grep wording in the report and app (see QA plan section 6) | Saumya | In progress; report wording reviewed, repository-wide scan pending |
+| W-11 | Accuracy reported alone, or mock data shown unlabelled | Review of the report and dashboard | Saumya | In progress; review found test-set leaderboard language that implied model selection. Dashboard labels and warnings corrected in `qa/saumya-final-release-audit`; regression/visual review pending. No hard-coded mock metrics were found in the reviewed views. |
+| W-12 | Text claims discovery or real-world probability | Grep wording in the report and app (see QA plan section 6) | Saumya | In progress; simulation UI and report language corrected in `qa/saumya-final-release-audit`. App scope disclaimers are present; full repository-wide scan and module review remain pending. |
 
 ---
 
