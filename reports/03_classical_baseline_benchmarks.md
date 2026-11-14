@@ -79,8 +79,8 @@ The historical values below are not reproduced. Use the reconciliation record an
 ## 3. Key Observations and Discussion
 
 1. **Feature Group Discrimination:**
-   * High-level invariant mass features ($D=7$) achieve test ROC-AUC = 0.7661 <!-- allow-metric -->, outperforming raw low-level kinematic variables ($D=21$, ROC-AUC = 0.7476 <!-- allow-metric -->) despite using only one-third as many inputs. This directly confirms that physicist-derived invariant mass reconstructions ($m_{bb}$, $m_{wwbb}$) condense non-linear resonance constraints into variables accessible to linear decision boundaries.
-   * The clean rerun gives the all-features Logistic Regression test ROC-AUC of 0.6854 <!-- allow-metric -->. This is close to the reconciled 1M result of 0.6834 <!-- allow-metric -->. The earlier 0.8369 figure was fabricated placeholder data and is excluded.
+   * In the clean 250k rerun, test ROC-AUC is 0.5960 for low-level features, 0.6518 for high-level features, and 0.6854 for all features. <!-- allow-metric --> The 1M all-feature result is 0.6834. <!-- allow-metric --> These are the reconciled values; the earlier 0.7661 and 0.7476 discussion figures are not supported by the current clean rerun and are removed.
+   * The corrected results show higher discrimination when the feature groups are combined in this benchmark. They do not by themselves establish a causal explanation for the performance difference.
 
 2. **Feature Importance (Learned Normalized Coefficients):**
    * Analysis of the weights assigned to the standardized features in the all-features model reveals that $m_{bb}$ (invariant mass of the two b-jets) and $m_{wwbb}$ receive the largest positive discrimination coefficients for the exotic Higgs signal.
