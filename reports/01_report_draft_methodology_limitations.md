@@ -136,8 +136,8 @@ The experiment protocol selects operating thresholds on validation data for a ta
 
 ### L2. Class Balance Disparity
 - The benchmark dataset features an approximately balanced mixture ($52.8\%$ signal, $47.2\%$ background).
-- In real-world LHC operation, Higgs production cross-sections are orders of magnitude smaller than background QCD jet and top production (e.g. picobarns vs nanobarns/microbarns, a signal-to-background ratio on the order of $10^{-6}$ to $10^{-9}$).
-- Consequently, precision, PR-AUC, and calibration curves measured on this benchmark do not directly transfer to real collider event rates without Bayesian prior reweighting.
+- The benchmark is approximately class-balanced, unlike many real collider analysis selections. This project does not model the full production rates, selection efficiencies, detector effects or analysis-specific background composition needed to estimate deployment prevalence.
+- Consequently, precision, PR-AUC and calibration measured on this benchmark must not be extrapolated to real collider event rates. Any prevalence adjustment would require a separately justified analysis model and external physics inputs.
 
 ### L3. Benchmark Scope and Non-Discovery Claim
 - The signal process simulates an exotic Higgs cascade under a two-Higgs-doublet model (2HDM), not the Standard Model 125 GeV Higgs discovery of 2012.
@@ -153,7 +153,7 @@ The experiment protocol selects operating thresholds on validation data for a ta
 
 ---
 
-## 2. Full-Dataset Benchmark Results (1,000,000 events)
+## 3. Full-Dataset Benchmark Results (1,000,000 events)
 
 The 1M benchmark uses a 1,000,000-row sequential-head sample and a stratified 70/15/15 split (700,000 training, 150,000 validation and 150,000 held-out test events). The reconciliation record confirms that all three 1M model runs used the 28-feature all-features group. The 1M experiment is kept separate from the 250k subset results.
 
@@ -165,7 +165,7 @@ The 1M benchmark uses a 1,000,000-row sequential-head sample and a stratified 70
 
 The per-model training times were restored in the reconciliation work. The MLP metrics remain provisional pending the neural-network release gate. The current evidence supports describing the measured 1M results, but not declaring a final project-wide best model or combining them with the 250k compact-MLP results.
 
-## 3. Summary of Validity Threats and Mitigations
+## 4. Summary of Validity Threats and Mitigations
 
 | Threat | Risk Direction | Implemented Mitigation |
 |---|---|---|
