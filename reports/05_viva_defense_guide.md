@@ -69,7 +69,7 @@ Our benchmark sample has an empirical class mix of about $52.8\%$ signal. Accura
 
 ### Q11: How is the operating-point analysis performed?
 **Authoritative Answer:**
-In collider searches, physicists select an operating point that delivers a specific target signal efficiency ($\epsilon_{\text{sig}} = \text{TPR}$). Under protocol `higgs-split-v1`, we specify a target efficiency of $50.0\%$ in advance. We scan the validation ROC curve to identify the score threshold closest to $50\%$ TPR. We then freeze this threshold and evaluate it on the held-out test partition, measuring the achieved test signal efficiency and test background rejection ($1 - \text{FPR}$). At 50% signal efficiency, the compact MLP achieves $96.2\%$ background rejection compared to $86.5\%$ for Logistic Regression.
+In this project, the target signal efficiency is specified in the protocol and the threshold is selected using validation predictions. The threshold is then frozen and evaluated on held-out test predictions. Report only the operating-point values stored in the relevant run artifact. The historical 96.2% and 86.5% figures in earlier drafts are superseded and should not be repeated.
 
 ### Q12: Why is the Brier score important alongside ROC-AUC?
 **Authoritative Answer:**
@@ -116,7 +116,7 @@ To ensure strict separation of concerns between model computation and user-inter
 
 ### Q18: What automated test suites ensure repository reliability?
 **Authoritative Answer:**
-Our testing framework has 143 passing tests in the fresh-clone run on 2026-11-14, with hosted CI run #26 also passing. The exact local command was `MPLBACKEND=Agg python -m pytest -q`.
+Our testing framework has 143 passing tests in the fresh-clone run on 2026-11-14 (Python 3.15 on macOS Apple Silicon), with hosted CI run #26 also passing (Python 3.11). The exact local command was `MPLBACKEND=Agg python -m pytest -q`.
 1. **Repository Hygiene (`test_repo_hygiene.py`):** Guards against committed dataset files, binary weights, secrets, broken markdown links, and unannotated metric claims.
 2. **Schema Enforcement (`test_feature_dictionary.py`, `test_features.py`):** Asserts exact 21+7 column orders and types against the UCI specification.
 3. **Notebook Readability (`test_notebook_style.py`):** Ensures every code cell is preceded by an explanatory markdown cell ($\ge 25$ words), with short cells ($\le 40$ lines) and zero commented-out code.
