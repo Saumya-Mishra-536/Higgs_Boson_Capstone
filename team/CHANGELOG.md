@@ -28,6 +28,12 @@
 
 ## [Unreleased]
 
+### Changed
+
+* **2026-11-14:** Dashboard ranking labels now identify highest observed held-out test ROC-AUC as descriptive only; threshold workbench warns that operating-point selection must remain validation-only; simulation outputs are labelled class-1 classifier scores rather than physical probabilities. *(Saumya)*
+* **2026-11-14:** QA plan and setup guide record the macOS Python 3.15 clean-clone result (143 passed) and successful Python 3.11 hosted CI run #26; BUG-022 verified fixed. *(Saumya)*
+* **2026-11-14:** Corrected stale classical baseline comparisons, softened provisional MLP interpretations, removed unsupported prevalence figures, and fixed duplicate report section numbering. *(Saumya)*
+
 ### Fixed
 
 * **2026-11-13:** Issue #21 / BUG-021 and BUG-022: unified dashboard launch and artifact validation, removed synthetic startup fallbacks, exposed run metadata and errors, and declared dashboard/test extras with CI and regression coverage. Local verification complete; peer QA and integration pending. *(Ronit Singh)*
