@@ -73,14 +73,14 @@ All runs use the shared `higgs-split-v1` stratified partition with seed 42 (70% 
 ## 3. Results Comparison and Scientific Interpretation
 
 1. **Representation Learning & Feature Discrimination:**
-   * **Low-Level Kinematics (21 features):** The MLP achieves test ROC-AUC = 0.8000 <!-- allow-metric -->. While significantly stronger than the linear baseline (0.7476 <!-- allow-metric -->), learning directly from four-momenta requires substantial nonlinear capacity and all 30 epochs without early stopping.
-   * **High-Level Invariant Masses (7 features):** The MLP achieves test ROC-AUC = 0.9043 <!-- allow-metric --> and converges rapidly in only 10 epochs. This demonstrates that physicist-derived kinematic invariants (such as $m_{bb}$ and $m_{wwbb}$) concentrate decisive resonance information that drastically accelerates convergence.
-   * **All Features Combined (28 features):** Combining raw kinematics with invariant masses yields the highest discrimination (test ROC-AUC = 0.9406 <!-- allow-metric -->, test PR-AUC = 0.9372 <!-- allow-metric -->, Brier score = 0.0945 <!-- allow-metric -->). The network benefits from both direct energy measurements and composite decay constraints.
+   * **Low-Level Kinematics (21 features):** The provisional MLP run records test ROC-AUC = 0.8000. <!-- allow-metric --> This value is not approved for a final comparison with the corrected classical baseline until the neural release checks are complete.
+   * **High-Level Invariant Masses (7 features):** The provisional run records test ROC-AUC = 0.9043 <!-- allow-metric --> after 10 epochs. This is an observed result for this run, not proof that these variables concentrate decisive resonance information or that the architecture will generalize.
+   * **All Features Combined (28 features):** The provisional run records test ROC-AUC = 0.9406, test PR-AUC = 0.9372 and Brier score = 0.0945. <!-- allow-metric --> These values remain provisional and must not be used as a final project-wide headline or best-model claim.
 
 2. **Regularization & Generalization Dynamics:**
-   * BatchNorm1d effectively stabilized internal activations across batches of 1024 events.
-   * Dropout (0.20) prevented over-adaptation of hidden units to training noise, resulting in test ROC-AUC scores that closely track or slightly exceed validation performance across all configurations without test leakage.
-   * Brier score drops from 0.1824 <!-- allow-metric --> on low-level to 0.0945 <!-- allow-metric --> on all features, reflecting substantial improvement in probabilistic confidence.
+   * Batch normalization and dropout were included as regularization components in the architecture. The available metrics do not isolate their causal effects, so this report does not claim that they prevented overfitting.
+   * Similar validation and test scores do not prove the absence of leakage; the neural reproducibility and leakage review remain open.
+   * The observed Brier scores are descriptive for the benchmark split and do not establish calibration under real collider class prevalence.
 
 ---
 
