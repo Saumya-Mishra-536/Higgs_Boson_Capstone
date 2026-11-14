@@ -1,7 +1,7 @@
 # Setup and Installation Guide
 
 > **Maintainer:** Saumya Mishra (MID-07). **Goal:** a new teammate can get from zero to "tests pass and data checked" without asking anyone.
- > **Verification status:** a fresh macOS Apple Silicon clone with Python 3.15 completed `python -m pip install -e ".[dev]"` and `MPLBACKEND=Agg python -m pytest -q` with **143 passed** on 2026-11-14. GitHub Actions also passed the same editable install and full test command on Python 3.11 (run #26). Docker build and independent model retraining remain unverified. See `docs/12_QA_TEST_PLAN.md`.
+> **Verification status:** a fresh macOS Apple Silicon clone with Python 3.15 completed `python -m pip install -e ".[dev]"` and `MPLBACKEND=Agg python -m pytest -q` with **143 passed** on 2026-11-14. GitHub Actions also passed the same editable install and full test command on Python 3.11 (run #26). Docker build and independent model retraining remain unverified. See `docs/12_QA_TEST_PLAN.md`.
 
 ---
 
