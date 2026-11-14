@@ -2,7 +2,7 @@
 
 > **Owner:** Saumya Mishra (END-04, MID-07). **Companion files:** `team/BUG_TRACKER.md`, `team/CHANGELOG.md`, `tests/`.
 > **Principle:** Saumya coordinates and verifies; module owners write and fix the tests and code for their own modules (`team/TEAM_CHARTER.md`).
-> **Verification status:** the repository records a full test run of 143 passed on 2026-11-13. Editable packaging and dashboard AppTest were also verified as documented below. Fresh network installation, Docker build, hosted CI, independent retraining and clean-clone reproduction remain unverified.
+ > **Verification status:** fresh macOS Apple Silicon clone and editable `.[dev]` install passed on 2026-11-14 with 143 tests passing; GitHub Actions run #26 also passed on Python 3.11. Docker build, independent model retraining and module-owner integration review remain unverified.
 
 ---
 
@@ -228,8 +228,7 @@ Saumya signs off only when every box is ticked. Any unticked box blocks document
   prediction counts and invalid values; malformed EDA; multiple-run comparison;
   legacy loader delegation; and startup without generated results.
 - Saved output artifacts were not modified.
-- Not run: Docker build, hosted CI, fresh network installation or independent retraining.
-  Saumya clean-clone QA and Krishna integration review remain pending.
+- Not run at that time: Docker build, hosted CI, fresh network installation or independent retraining. The later clean-clone and hosted CI results are recorded below.
 
 ## Issue #20 documentation integration — 2026-11-14
 
@@ -237,4 +236,25 @@ Saumya signs off only when every box is ticked. Any unticked box blocks document
 - Corrected the 250k Logistic Regression placeholder values using the T4 clean-rerun ROC-AUC evidence in `docs/14_RESULTS_RECONCILIATION.md`.
 - Kept the 250k and 1M experiments separate and labelled neural benchmark values provisional pending the remaining neural release evidence and decision.
 - Updated the setup guide, report index, changelog, bug register, citation version and task backlog.
-- No tests were executed as part of this documentation-only branch update. The latest recorded full-suite result remains 143 passed on 2026-11-13. Clean-clone verification, fresh network installation, Docker build, hosted CI and independent neural retraining remain outstanding.
+- The clean-clone and hosted CI evidence is now recorded below. Dashboard wording, threshold-workbench caveats and report-claim corrections are included in the follow-up QA branch.
+
+
+## Independent clean-clone and hosted CI verification — 2026-11-14
+
+**Local macOS Apple Silicon clone (Python 3.15):**
+
+```bash
+git clone https://github.com/Saumya-Mishra-536/Higgs_Boson_Capstone.git Higgs_Boson_QA
+cd Higgs_Boson_QA
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -e ".[dev]"
+MPLBACKEND=Agg python -m pytest -q
+```
+
+Result: editable package and all declared development dependencies installed successfully; **143 passed in 80.52s (0:01:20)**. Package downloads had transient network interruptions/timeouts, but pip resumed and completed them. This is the independent clean-clone result supplied from the user's Mac terminal log.
+
+**GitHub Actions run #26 (Python 3.11):** fresh checkout, Python setup, `python -m pip install -e ".[dev]"`, and `python -m pytest -q` all succeeded. Run: https://github.com/Saumya-Mishra-536/Higgs_Boson_Capstone/actions/runs/43561124032. The hosted log did not establish the test count; the 143 count above is from the local run.
+
+**Still not verified:** Docker image build, independent model retraining from source data, full manual notebook execution, and module-owner integration review. Neural evidence release decision remains open.
