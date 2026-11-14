@@ -39,13 +39,13 @@ Real particle detectors record electronic signals (tracker hits, calorimeter ene
 ### Q6: What did your benchmarks reveal about the value of the 7 high-level features?
 **Authoritative Answer:**
 The high-level features exhibit extraordinary discriminatory efficiency. Despite comprising only 7 numbers compared to 21 low-level measurements:
-- For Logistic Regression, high-level features achieve test ROC-AUC = 0.7661 <!-- allow-metric --> versus 0.7476 <!-- allow-metric --> for low-level.
-- For the Compact MLP, high-level features achieve test ROC-AUC = 0.9043 <!-- allow-metric --> in only 10 epochs versus 0.8000 <!-- allow-metric --> in 30 epochs for low-level.
-This demonstrates that relativistic invariant mass formulas condense non-linear geometric resonance constraints into dense, linearly and non-linearly separable signals that drastically accelerate convergence.
+- The reconciled 250k Logistic Regression results are 0.5960 for low-level and 0.6518 for high-level features. <!-- allow-metric -->
+- The earlier MLP comparisons in this guide are provisional and remain under the neural release gate. Do not use them to make a final cross-family claim.
+- The benchmark results can motivate further study of invariant-mass features, but they do not prove a general physical explanation or a universal convergence advantage.
 
 ### Q7: Why does combining all 28 features yield the best performance?
 **Authoritative Answer:**
-Combining all 28 features achieves the highest test discrimination (MLP test ROC-AUC = 0.9406 <!-- allow-metric -->, test PR-AUC = 0.9372 <!-- allow-metric -->, Brier score = 0.0945 <!-- allow-metric -->). The high-level invariant masses localize the resonance energy peaks (such as $m_{bb}$ for the Higgs candidate), while the low-level kinematic features retain directional angles ($\eta, \phi$) and transverse scales ($p_T$) that are discarded during scalar invariant mass compression. The neural network leverages both representations simultaneously.
+The reconciled 250k classical results show the all-feature Logistic Regression run above the low-level and high-level variants. The earlier all-feature MLP metrics are provisional under BUG-015 and BUG-017. Combining feature groups is a reasonable benchmark configuration to evaluate, but do not claim a final neural best-model result until the release decision is recorded.
 
 ### Q8: What preprocessing is applied to b-tag variables and angles?
 **Authoritative Answer:**
@@ -65,7 +65,7 @@ We enforce four strict mathematical boundaries:
 
 ### Q10: Why is Accuracy insufficient as a primary evaluation metric for this benchmark?
 **Authoritative Answer:**
-Although our benchmark sample has an empirical class mix of $52.8\%$ signal, accuracy is threshold-dependent and masks trade-offs between false positives and false negatives. In particle physics, background events (Standard Model top quarks or QCD multijets) outnumber signal events in real collisions by orders of magnitude ($10^6$ to $10^9$ to 1). A trivial majority-class classifier could achieve deceptive accuracy while detecting zero true signals. Therefore, threshold-independent metrics (ROC-AUC, PR-AUC) and probabilistic calibration metrics (Brier score, reliability curves) are essential.
+Our benchmark sample has an empirical class mix of about $52.8\%$ signal. Accuracy is threshold-dependent and can hide the trade-off between false positives and false negatives. The project does not model real-collider prevalence or background composition, so no numeric real-world signal-to-background ratio is asserted here. ROC-AUC, PR-AUC, confusion-matrix rates and Brier score provide complementary views of benchmark performance; none alone establishes real-world calibration.
 
 ### Q11: How is the operating-point analysis performed?
 **Authoritative Answer:**
@@ -75,7 +75,7 @@ In collider searches, physicists select an operating point that delivers a speci
 **Authoritative Answer:**
 ROC-AUC evaluates ranking order: whether a random signal event scores higher than a random background event. However, it is invariant to monotonic transformations and insensitive to probability calibration. The Brier score measures the mean squared error between predicted probabilities and true binary labels:
 $$\text{Brier} = \frac{1}{N} \sum_{i=1}^N (p_i - y_i)^2$$
-A lower Brier score confirms that predicted probabilities are well-calibrated and reliably reflect relative confidence. In our benchmark, the MLP Brier score drops from $0.1824$ <!-- allow-metric --> on low-level features down to $0.0945$ <!-- allow-metric --> on all features.
+A lower Brier score indicates lower mean squared probability error on the evaluated benchmark split. It does not, by itself, confirm calibration. Review the reliability diagram and class prevalence, and do not treat the provisional MLP Brier values as final results.
 
 ---
 
@@ -88,11 +88,11 @@ We implement a compact PyTorch Multi-Layer Perceptron (MLP) binary classifier:
 - Regularization: Each hidden layer is followed by `BatchNorm1d`, `ReLU` activation, and `Dropout(0.20)`.
 - Loss function: `BCEWithLogitsLoss`, which combines a sigmoid activation and binary cross-entropy into a single numerically stable log-sum-exp formulation.
 - Optimizer: `AdamW` ($\eta = 10^{-3}$, weight decay $\lambda = 10^{-4}$, batch size $1024$).
-- Design Rationale: Rather than an oversized unregularized deep network that overfits or requires GPU acceleration, this compact topology trains in under 15 seconds on CPU while achieving a high test ROC-AUC of 0.9406 <!-- allow-metric -->.
+- Design Rationale: This compact topology provides a resource-conscious neural baseline. Its observed metrics remain provisional, and this report does not claim that its architecture prevents overfitting.
 
 ### Q14: How does Batch Normalization and Dropout prevent overfitting?
 **Authoritative Answer:**
-Batch Normalization standardizes internal feature activations across mini-batches ($N=1024$), mitigating internal covariate shift and smoothing the loss landscape, which allows faster learning rates. Dropout randomly zeros $20\%$ of hidden activations during training, forcing the network to learn distributed, redundant feature representations rather than co-adapting to spurious training event correlations. As a result, our validation and held-out test ROC-AUC scores match within $0.0017$, confirming absence of test overfitting. <!-- allow-metric -->
+Batch Normalization standardizes internal feature activations across mini-batches ($N=1024$), mitigating internal covariate shift and smoothing the loss landscape, which allows faster learning rates. Dropout randomly zeros $20\%$ of hidden activations during training, forcing the network to learn distributed, redundant feature representations rather than co-adapting to spurious training event correlations. These regularization layers are design choices, not proof that overfitting was prevented. Similar validation and test metrics cannot establish absence of leakage or test overfitting; the neural reproducibility review remains open.
 
 ### Q15: Why does Logistic Regression underperform the MLP on low-level features?
 **Authoritative Answer:**
@@ -100,7 +100,7 @@ Logistic Regression assumes a monotonic, linear relationship between feature inp
 $$\log\left(\frac{p}{1-p}\right) = \vec{w}^T \vec{x} + b$$
 Low-level particle observables are individual momentum components ($p_T, \eta, \phi$). Distinguishing signal from background requires computing invariant mass hyperboloids:
 $$m^2 = E^2 - p_x^2 - p_y^2 - p_z^2$$
-Because a linear model cannot compute quadratic or cross-product terms between components without explicit manual polynomial expansion, it achieves only test ROC-AUC = 0.7476 <!-- allow-metric -->. The MLP, through its non-linear activation functions and stacked hidden layers, learns these relativistic geometric relations internally, achieving ROC-AUC = 0.8000 <!-- allow-metric -->.
+The reconciled 250k low-level Logistic Regression test ROC-AUC is 0.5960. <!-- allow-metric --> The earlier MLP low-level value of 0.8000 is provisional and is not approved for a final comparison. It is reasonable to say that nonlinear models can represent nonlinear functions, but the current evidence does not prove that this MLP learned a particular relativistic relation.
 
 ### Q16: How did you implement early stopping in PyTorch?
 **Authoritative Answer:**
@@ -116,7 +116,7 @@ To ensure strict separation of concerns between model computation and user-inter
 
 ### Q18: What automated test suites ensure repository reliability?
 **Authoritative Answer:**
-Our testing framework includes 103 automated tests spanning multiple levels:
+Our testing framework has 143 passing tests in the fresh-clone run on 2026-11-14, with hosted CI run #26 also passing. The exact local command was `MPLBACKEND=Agg python -m pytest -q`.
 1. **Repository Hygiene (`test_repo_hygiene.py`):** Guards against committed dataset files, binary weights, secrets, broken markdown links, and unannotated metric claims.
 2. **Schema Enforcement (`test_feature_dictionary.py`, `test_features.py`):** Asserts exact 21+7 column orders and types against the UCI specification.
 3. **Notebook Readability (`test_notebook_style.py`):** Ensures every code cell is preceded by an explanatory markdown cell ($\ge 25$ words), with short cells ($\le 40$ lines) and zero commented-out code.
