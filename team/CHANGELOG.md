@@ -10,6 +10,7 @@
 
 ### Changed
 
+* **2026-11-14:** PR #2 follow-up QA — reject hard-label outputs in interactive simulation, add regression coverage, clarify that baseline QA evidence predates this branch, neutralize viva prompts, correct stale neural benchmark reconciliation rows, and add a Docker image build to CI. Current-branch CI and Docker build are pending. *(Saumya)*
 * **2026-11-14:** `reports/01_report_draft_methodology_limitations.md`, `reports/03_classical_baseline_benchmarks.md` and `reports/README.md` — integrated methodology, corrected the invalid 250k Logistic Regression placeholder, separated 250k and 1M results, and marked neural results provisional pending release evidence. *(Saumya)*
 * **2026-11-14:** `docs/11_SETUP_GUIDE.md` and `CITATION.cff` — aligned repository instructions and version metadata with the current repository and documented QA status. *(Saumya)*
 * **2026-11-14:** `team/TASK_BACKLOG.csv` — added explicit final-report integration and release-QA work packages. *(Saumya)*
