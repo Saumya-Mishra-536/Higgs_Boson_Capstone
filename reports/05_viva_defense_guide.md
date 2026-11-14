@@ -90,11 +90,11 @@ We implement a compact PyTorch Multi-Layer Perceptron (MLP) binary classifier:
 - Optimizer: `AdamW` ($\eta = 10^{-3}$, weight decay $\lambda = 10^{-4}$, batch size $1024$).
 - Design Rationale: This compact topology provides a resource-conscious neural baseline. Its observed metrics remain provisional, and this report does not claim that its architecture prevents overfitting.
 
-### Q14: How does Batch Normalization and Dropout prevent overfitting?
+### Q14: What roles do Batch Normalization and Dropout play in the MLP architecture, and what does the current evidence establish about their effects?
 **Authoritative Answer:**
 Batch Normalization standardizes internal feature activations across mini-batches ($N=1024$), mitigating internal covariate shift and smoothing the loss landscape, which allows faster learning rates. Dropout randomly zeros $20\%$ of hidden activations during training, forcing the network to learn distributed, redundant feature representations rather than co-adapting to spurious training event correlations. These regularization layers are design choices, not proof that overfitting was prevented. Similar validation and test metrics cannot establish absence of leakage or test overfitting; the neural reproducibility review remains open.
 
-### Q15: Why does Logistic Regression underperform the MLP on low-level features?
+### Q15: How do the current Logistic Regression and MLP results compare on low-level features, and what limits a definitive conclusion?
 **Authoritative Answer:**
 Logistic Regression assumes a monotonic, linear relationship between feature inputs and the log-odds of the signal class:
 $$\log\left(\frac{p}{1-p}\right) = \vec{w}^T \vec{x} + b$$
