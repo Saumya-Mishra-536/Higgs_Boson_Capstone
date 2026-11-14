@@ -111,17 +111,17 @@ The benchmark results are reported separately by sample size and protocol. <!-- 
 
 | Experiment | Sample size | Feature group | Test ROC-AUC | Evidence status |
 |---|---:|---|---:|---|
-| Logistic Regression | 250,000 | All features (28) | 0.6854 <!-- allow-metric --> | Clean rerun recorded in reconciliation T4 |
-| Logistic Regression | 250,000 | High-level (7) | 0.6518 <!-- allow-metric --> | Clean rerun recorded in reconciliation T4 |
-| Logistic Regression | 250,000 | Low-level (21) | 0.5960 <!-- allow-metric --> | Clean rerun recorded in reconciliation T4 |
+| Logistic Regression | 250,000 | All features (28) | 0.6854 <!-- allow-metric --> | Clean rerun recorded in reconciliation section 7 (Aditya) |
+| Logistic Regression | 250,000 | High-level (7) | 0.6518 <!-- allow-metric --> | Clean rerun recorded in reconciliation section 7 (Aditya) |
+| Logistic Regression | 250,000 | Low-level (21) | 0.5960 <!-- allow-metric --> | Clean rerun recorded in reconciliation section 7 (Aditya) |
 | Logistic Regression | 1,000,000 | All features (28) | 0.6834 <!-- allow-metric --> | Reconciled 1M artifact |
 | XGBoost | 1,000,000 | All features (28) | 0.8271 <!-- allow-metric --> | Reconciled 1M artifact |
 | Wide MLP | 1,000,000 | All features (28) | 0.8399 <!-- allow-metric --> | Provisional pending neural release gate |
-| Compact MLP | 250,000 | Low-level (21) | 0.8000 <!-- allow-metric --> | Provisional pending neural release gate |
-| Compact MLP | 250,000 | High-level (7) | 0.9043 <!-- allow-metric --> | Provisional pending neural release gate |
-| Compact MLP | 250,000 | All features (28) | 0.9406 <!-- allow-metric --> | Provisional pending neural release gate |
+| Compact MLP | 250,000 | Low-level (21) | 0.7257 <!-- allow-metric --> | Current saved artifact; provisional pending neural release gate |
+| Compact MLP | 250,000 | High-level (7) | 0.7832 <!-- allow-metric --> | Current saved artifact; provisional pending neural release gate |
+| Compact MLP | 250,000 | All features (28) | 0.8121 <!-- allow-metric --> | Current saved artifact; provisional pending neural release gate |
 
-The table deliberately does not combine the 250k and 1M experiments into a single ranking. The 250k MLP figures remain provisional until the required clean reproduction and cross-pipeline comparison are accepted. No project-wide headline score or best-model conclusion is made at this stage.
+The table deliberately does not combine the 250k and 1M experiments into a single ranking. The 250k MLP values above are the current saved artifact metrics (not the superseded 0.8000/0.9043/0.9406 draft figures) and remain provisional until clean reproduction and cross-pipeline comparison are accepted. No project-wide headline score or best-model conclusion is made at this stage.
 
 ### M7. Operating-Point Analysis
 

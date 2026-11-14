@@ -92,15 +92,11 @@ We implement a compact PyTorch Multi-Layer Perceptron (MLP) binary classifier:
 
 ### Q14: What roles do Batch Normalization and Dropout play in the MLP architecture, and what does the current evidence establish about their effects?
 **Authoritative Answer:**
-Batch Normalization standardizes internal feature activations across mini-batches ($N=1024$), mitigating internal covariate shift and smoothing the loss landscape, which allows faster learning rates. Dropout randomly zeros $20\%$ of hidden activations during training, forcing the network to learn distributed, redundant feature representations rather than co-adapting to spurious training event correlations. These regularization layers are design choices, not proof that overfitting was prevented. Similar validation and test metrics cannot establish absence of leakage or test overfitting; the neural reproducibility review remains open.
+Batch Normalization normalizes hidden activations using mini-batch statistics during training, while Dropout randomly sets a fraction of hidden activations to zero during training. In this architecture the configured dropout rate is 0.20. These are regularization design choices intended to influence optimization and reduce co-adaptation; the saved benchmark does not isolate their causal effect. The current evidence therefore does not establish that they prevented overfitting. Similar validation and test metrics cannot establish absence of leakage or test overfitting; the neural reproducibility review remains open.
 
 ### Q15: How do the current Logistic Regression and MLP results compare on low-level features, and what limits a definitive conclusion?
 **Authoritative Answer:**
-Logistic Regression assumes a monotonic, linear relationship between feature inputs and the log-odds of the signal class:
-$$\log\left(\frac{p}{1-p}\right) = \vec{w}^T \vec{x} + b$$
-Low-level particle observables are individual momentum components ($p_T, \eta, \phi$). Distinguishing signal from background requires computing invariant mass hyperboloids:
-$$m^2 = E^2 - p_x^2 - p_y^2 - p_z^2$$
-The reconciled 250k low-level Logistic Regression test ROC-AUC is 0.5960. <!-- allow-metric --> The earlier MLP low-level value of 0.8000 is provisional and is not approved for a final comparison. It is reasonable to say that nonlinear models can represent nonlinear functions, but the current evidence does not prove that this MLP learned a particular relativistic relation.
+Logistic Regression uses a linear decision function in the input features, while the MLP can represent nonlinear interactions through its hidden layers. The low-level feature group contains event-level kinematic descriptors; the high-level group contains engineered invariant-mass quantities derived from those inputs. The current saved 250k artifacts report low-level test ROC-AUC of 0.5960 for Logistic Regression and 0.7257 for the compact MLP. <!-- allow-metric --> The MLP result remains provisional pending independent reproduction and the release decision, so it should not be presented as an approved final comparison. The feature definitions and their physical interpretation are described in `docs/06` and `reports/06`.
 
 ### Q16: How did you implement early stopping in PyTorch?
 **Authoritative Answer:**
@@ -116,7 +112,7 @@ To ensure strict separation of concerns between model computation and user-inter
 
 ### Q18: What automated test suites ensure repository reliability?
 **Authoritative Answer:**
-Our testing framework has 143 passing tests in the fresh-clone run on 2026-11-14 (Python 3.15 on macOS Apple Silicon), with hosted CI run #26 also passing (Python 3.11). The exact local command was `MPLBACKEND=Agg python -m pytest -q`.
+The user-supplied fresh-clone baseline on 2026-11-14 (Python 3.15 on macOS Apple Silicon) reported 143 passing tests. Separately, the current QA branch passed the editable install and full `python -m pytest -q` workflow (**144 passed in 14.59s**) on Python 3.11, and the Docker image build passed in run [#43574590439](https://github.com/Saumya-Mishra-536/Higgs_Boson_Capstone/actions/runs/43574590439).
 1. **Repository Hygiene (`test_repo_hygiene.py`):** Guards against committed dataset files, binary weights, secrets, broken markdown links, and unannotated metric claims.
 2. **Schema Enforcement (`test_feature_dictionary.py`, `test_features.py`):** Asserts exact 21+7 column orders and types against the UCI specification.
 3. **Notebook Readability (`test_notebook_style.py`):** Ensures every code cell is preceded by an explanatory markdown cell ($\ge 25$ words), with short cells ($\le 40$ lines) and zero commented-out code.
@@ -124,7 +120,7 @@ Our testing framework has 143 passing tests in the fresh-clone run on 2026-11-14
 
 ### Q19: How is the application deployed and containerized?
 **Authoritative Answer:**
-We provide a production Docker containerization specification (`deployment/Dockerfile`) using Python 3.12-slim, non-root user execution (`appuser:10001`), and health checks pinging Streamlit's `/_stcore/health` endpoint. A complete deployment runbook (`deployment/DEPLOYMENT_RUNBOOK.md`) and local launcher script (`deploy_local.sh`) document reproducible container builds and zero-downtime rollback procedures.
+The repository provides a Docker image definition (`deployment/Dockerfile`) using Python 3.12-slim, non-root user execution (`appuser:10001`), and a Streamlit `/_stcore/health` check. The image build passed in current-branch CI. This verifies image construction, not a live cloud deployment, health-check operation in production, or rollback. The runbook documents the deployment procedure; live deployment verification remains separate.
 
 ### Q20: What are your planned priorities for the end-semester milestone?
 **Authoritative Answer:**

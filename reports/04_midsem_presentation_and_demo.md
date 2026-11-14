@@ -73,8 +73,8 @@ The original mid-semester table has been superseded. The 250k Logistic Regressio
 - Brier score is a probability-error metric on this benchmark. It does not, by itself, establish calibration under real-world event prevalence.
 
 ### Slide 10: Compute & Engineering Trade-Offs
-- **Training Budget:** Total training time for all 6 models combined is under 32 seconds on an ordinary 8-core CPU without GPU requirements.
-- **Software Quality:** 143 automated tests passed in a fresh macOS clone on 2026-11-14; hosted CI run #26 also passed.
+- **Training Budget:** The current 250k artifact registry records nine runs with a combined training time of approximately 156.8 seconds. The compact-MLP run artifacts record CUDA as the execution device; the exact GPU model is not recorded. Do not reuse the earlier under-32-second CPU estimate.
+- **Software Quality:** The user-supplied fresh macOS clone baseline reported 143 passed. The current QA branch passed editable installation and the full pytest workflow (**144 passed in 14.59s**) on Python 3.11, and the Docker image build passed in [run #43574590439](https://github.com/Saumya-Mishra-536/Higgs_Boson_Capstone/actions/runs/43574590439).
 - **Artifact Contract:** Versioned JSON envelope (`higgs-experiment-v1`) decoupling model training from dashboard presentation.
 
 ### Slide 11: Threats to Validity & Honest Limitations
@@ -82,12 +82,9 @@ The original mid-semester table has been superseded. The 250k Logistic Regressio
 - **Class Balance Difference:** The benchmark mixture (about $52.8\%$ signal) is not a model of the prevalence in a real collider analysis. This project does not estimate real-world event rates.
 - **Subsample Scaling:** Benchmark conducted on $250,000$ events; full 11M training reserved for end-semester scale-up.
 
-### Slide 12: Live Demonstration & End-Semester Roadmap
+### Slide 12: Live Demonstration & Remaining Release Work
 - **Live Demo:** HiggsLens Streamlit interactive dashboard (`app/main.py`).
-- **End-Semester Roadmap:**
-  - Gradient Boosted Trees baseline (XGBoost) across feature groups (`END-01`).
-  - Extended MLP hyperparameter optimization and diagnostic learning rates (`END-02`).
-  - Docker containerization and cloud deployment verification (`END-06`).
+- **Remaining gates:** independent MLP reproduction and release decision (Rachit/Krishna), full manual notebook execution, module-owner integration review, and regeneration/inspection of the PDF and PPTX exports from the corrected Markdown sources. A successful Docker image build does not establish a live cloud deployment.
 
 ---
 

@@ -63,7 +63,7 @@ The original 250k all-features Logistic Regression value of 0.8369 was fabricate
 
 The historical values below are not reproduced. Use the reconciliation record and serialized run artifacts for any additional metric or configuration detail.
 
-## 3. Key Observations and Discussion
+### Additional feature-group and coefficient observations
 
 1. **Feature Group Discrimination:**
    * In the clean 250k rerun, the all-features model has test ROC-AUC 0.6854, compared with 0.6518 for high-level and 0.5960 for low-level features. <!-- allow-metric -->

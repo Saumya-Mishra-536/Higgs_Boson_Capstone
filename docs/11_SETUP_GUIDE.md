@@ -1,7 +1,7 @@
 # Setup and Installation Guide
 
 > **Maintainer:** Saumya Mishra (MID-07). **Goal:** a new teammate can get from zero to "tests pass and data checked" without asking anyone.
-> **Baseline verification (before this QA branch):** a fresh macOS Apple Silicon clone with Python 3.15 completed `python -m pip install -e ".[dev]"` and `MPLBACKEND=Agg python -m pytest -q` with **143 passed** on 2026-11-14. GitHub Actions run #26 also passed the editable install and full test command on Python 3.11. These results predate the code and documentation changes on the current QA branch; they are not evidence that this branch passed. Check the latest pull-request CI run for the current commit before treating these changes as verified. Docker build and independent model retraining remain unverified. See `docs/12_QA_TEST_PLAN.md`.
+> **Verification:** QA branch commit `00de4267632e0302f587c46187e03a5f56b52874` passed the Python 3.11 editable install and full pytest workflow (**144 passed in 14.59s**) and the Docker image build in [CI run #43574590439](https://github.com/Saumya-Mishra-536/Higgs_Boson_Capstone/actions/runs/43574590439). The separate clean macOS Apple Silicon clone (Python 3.15, **143 passed**) and CI run #26 are earlier baseline evidence. Independent model retraining, full manual notebook execution and module-owner integration review remain unverified. See `docs/12_QA_TEST_PLAN.md`.
 
 ---
 

@@ -13,7 +13,7 @@ The repository holds two sets of results that disagree on the headline number:
 - **250k subset** (`outputs/*/metrics.json`, `outputs/experiments.json`): models with default or lightly set configurations, trained on the 250,000-row subset, seed 42, split 70/15/15.
 - **1M benchmark** (`outputs/full_colab_results.json`): models with tuned or wider configurations, trained on a 1,000,000-row sample, seed 42, split 70/15/15.
 
-`reports/01` quotes the 1M numbers. `reports/02` quotes the 250k MLP number. The final report must keep results separated by sample size and protocol until the decision owner approves a comparable release result.
+Earlier drafts mixed the 1M and 250k neural results. The current `reports/01` and final report now separate both sample sizes and protocols; `reports/02` details the current saved 250k compact-MLP artifacts. The neural rows remain provisional until independent reproduction and the decision owner’s release decision.
 
 ## 2. What the saved files say
 
@@ -61,10 +61,10 @@ Each hypothesis is open. A test either supports it, rules it out, or shows it ca
 | T1 | Leakage in the 250k pipeline (for example duplicate rows across train, validation and test) | Count exact duplicate rows across the three partitions of the 250k split; check that the test row indices are disjoint from train and validation | Aditya | If duplicates exist, the 250k results are invalid until fixed |
 | T2 | Different sampling: the 250k sample is seeded random, the 1M sample may be first-N rows | Compare class fraction and feature means of first-N and seeded-random samples at both sizes; the manifest records the 250k method | Aditya | If the 1M sample is ordered, its results are not representative |
 | T3 | Different column mapping or feature order between pipelines | Compare column names, order and per-column means for the same rows from both loaders | Aditya | A mapping error would change every model |
-| T4 | The 250k result does not reproduce from a clean run | Clean clone; run the MLP command in `docs/11_SETUP_GUIDE.md` section 7 for the all-features group with seed 42; compare to `outputs/mlp_all/metrics.json` | Rachit | Confirms or refutes the 0.9406 result |
-| T5 | The discrepancy is the data, not the code | Run the 1M pipeline's code on the 250k subset. If it gives about 0.94, the difference is the data. If it gives about 0.84, the difference is the code | Rachit with Krishna | Separates data from code |
+| T4 | The 250k result does not reproduce from a clean run | Clean clone; run the MLP command in `docs/11_SETUP_GUIDE.md` section 7 for the all-features group with seed 42; compare to `outputs/mlp_all/metrics.json` | Rachit | Confirms or refutes the current 0.8121 result |
+| T5 | The discrepancy is the data, not the code | Run the 1M pipeline's code on the 250k subset. Compare the reproduced compact-MLP result against the current 0.8121 250k artifact; interpret the result only after confirming identical split, preprocessing and architecture | Rachit with Krishna | Separates data from code |
 | T6 | The 1M runs used different features or tuning budgets | Record, for each 1M run, the feature group, hyperparameter search budget, seed and training split sizes | Aditya, Rachit | Makes the 1M results comparable |
-| T7 | Accuracy 0.865 is consistent with ROC-AUC 0.9406 for this data | Compare the accuracy-threshold relationship on the saved predictions in `outputs/mlp_all/test_predictions.csv` | Rachit | Supporting check for T1 and T4 | <!-- allow-metric -->
+| T7 | Confirm reported MLP accuracy from the current saved predictions | Recompute accuracy at the documented 0.5 score cutoff from `outputs/mlp_all/test_predictions.csv` and compare with `outputs/mlp_all/metrics.json` | Rachit | Supporting check for T1 and T4 | <!-- allow-metric -->
 
 **Acceptance for the decision:** T1, T4 and T5 must be run and their output pasted into this note. T2 and T3 must be run if T5 points at the data.
 
@@ -98,6 +98,6 @@ Each hypothesis is open. A test either supports it, rules it out, or shows it ca
 | T4 | **PENDING** | — | Rachit | Independent clean-clone reproduction of the 250k all-feature MLP and comparison with `outputs/mlp_all/metrics.json` have not been supplied. The Logistic Regression rerun is recorded separately and does not satisfy T4. | <!-- allow-metric -->
 | T5 | **PENDING** | — | Rachit / Krishna | Run the 1M pipeline implementation on the same 250k sample and compare its MLP result with the current 250k compact-MLP artifact. The existing Logistic Regression comparison does not satisfy this neural cross-pipeline test. | <!-- allow-metric -->
 | T6 | **PASS** | 2026-11-13 | Aditya | 1M configuration confirmed: all 3 models evaluated on `all` 28 features (700k/150k/150k splits). Per-model training times restored: LogReg=2.6s, XGBoost=35.1s, MLP=395.1s. |
-| T7 | **PENDING** | — | Rachit | Recompute the accuracy-threshold relationship for the current 250k MLP artifact from `outputs/mlp_all/test_predictions.csv`; the earlier 0.865 / 0.9406 pair is superseded and must not be used. |
+| T7 | **PENDING** | — | Rachit | Recompute the accuracy-threshold relationship for the current 250k MLP artifact from `outputs/mlp_all/test_predictions.csv`; the earlier 0.865 / 0.9406 pair is superseded; use the current saved artifact and do not infer a new threshold from the test set. |
 | Decision on headline (section 5.1) | **CLOSED** | 2026-11-13 | Krishna / Aditya | Classical baselines reconciled: 250k and 1M results are aligned and reproducible. Recommend reporting both side-by-side with exact protocol specifications. |
 
